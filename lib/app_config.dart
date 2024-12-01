@@ -38,4 +38,4 @@ class AppConfig {
   static const String BASE_URL_WITH_PREFIX = "$BASE_URL/$SELLER_PREFIX";
 }
 
-// https://forsatc.com/api/v2/seller/products/categories
+// https://forsatc.com/api/v2/seller/order/$id

@@ -167,15 +167,16 @@ class _OrderDetailsState extends State<OrderDetails> {
     loading.hide();
   }
 
-  Future<void> _updateDeliveryBoy(int id) async {
+  Future<void> _updateDeliveryBoy(
+      {required int develryBoy, required int orderId}) async {
     try {
       // Show loading indicator
       loading.show();
 
       // Make API call and get the response
       final response = await OrderRepository().sendOrderIdAndDeliveryBoy(
-        orderId: _orderDetails!.id!, // Ensure _orderDetails is not null
-        deliveryBoy: id,
+        orderId: orderId, // Ensure _orderDetails is not null
+        deliveryBoy: develryBoy,
       );
 
       // Hide loading indicator
@@ -1042,7 +1043,10 @@ class _OrderDetailsState extends State<OrderDetails> {
                     setState(() {
                       selectedDeliveryBoy = newDeliveryBoy;
                     });
-                    _updateDeliveryBoy(selectedDeliveryBoy!.id!);
+                    _updateDeliveryBoy(
+                      develryBoy: selectedDeliveryBoy!.id!,
+                      orderId: _orderDetails!.id!,
+                    );
                     print(
                         "Selected Delivery Boy: ${selectedDeliveryBoy?.name}");
                   },

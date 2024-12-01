@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:active_ecommerce_seller_app/api_request.dart';
 import 'package:active_ecommerce_seller_app/app_config.dart';
@@ -67,38 +68,58 @@ class OrderRepository {
     return commonResponseFromJson(response.body);
   }
 
-  
+  //  headers: {
+  //       "Content-Type": "application/json",
+  //       "Authorization":
+  //           "Bearer ${access_token.$}", // Replace with actual token
+  //       "App-Language": app_language.$!, // Replace with actual language
+  //     },
+
   Future<Map<String, dynamic>> sendOrderIdAndDeliveryBoy({
     required int orderId,
     required int deliveryBoy,
   }) async {
-    const String url = "https://forsatc.com/api/v2/seller/assign-delivery-boy";
+    final String url = "https://forsatc.com/api/v2/seller/assign-delivery-boy";
 
-    final body = jsonEncode({
-      "order_id": orderId.toString(),
-      "delivery_boy": deliveryBoy.toString(),
-    });
+    var body = {
+      "order_id": "$orderId",
+      "delivery_boy": "$deliveryBoy",
+    };
 
     try {
       final response = await ApiRequest.post(
         url: url,
-        body: body,
+        body: jsonEncode(body), // Convert the body to JSON
         headers: {
           "Content-Type": "application/json",
-          "Authorization": "Bearer ${access_token.$}", // Replace with actual token
+          "Authorization":
+              "Bearer ${access_token.$}", // Replace with actual token
           "App-Language": app_language.$!, // Replace with actual language
         },
       );
 
-      // Ensure a JSON-decoded response is returned
+      // Handle success response
       if (response.statusCode == 200) {
-        return jsonDecode(response.body);
+        final reeeeesponse = jsonDecode(response.body);
+        log('Correct: ${reeeeesponse["message"]}, Status Code: ${response.statusCode}');
+
+        return jsonDecode(response.body); // Parse and return the response
       } else {
-        return {"message": "Failed to update delivery boy"};
+        // Log the status and error message
+        final errorResponse = jsonDecode(response.body);
+        log('Error: ${errorResponse["message"]}, Status Code: ${response.statusCode}');
+        return {
+          "message": errorResponse["message"] ?? "Unknown error occurred",
+          "status": response.statusCode,
+          "success": false,
+        };
       }
     } catch (e) {
-      // Return an error response in case of an exception
-      return {"message": "Error occurred: $e"};
+      log('Exception: $e');
+      return {
+        "message": "An exception occurred: $e",
+        "success": false,
+      };
     }
   }
 

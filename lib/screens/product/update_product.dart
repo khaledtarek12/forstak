@@ -1040,8 +1040,8 @@ class _UpdateProductState extends State<UpdateProduct> {
         return buildMedia();
       case 2:
         return buildPriceNStock();
-      case 3:
-        return buildSEO();
+      // case 3:
+      //   return buildSEO();
       case 4:
         return buildShipping();
       case 5:
@@ -3042,9 +3042,9 @@ class _UpdateProductState extends State<UpdateProduct> {
           buildTopTapBarItem(
               LangText(context: context).getLocal().price_n_stock_ucf, 2),
           tabBarDivider(),
-          buildTopTapBarItem(
-              LangText(context: context).getLocal().seo_all_capital, 3),
-          tabBarDivider(),
+          // buildTopTapBarItem(
+          //     LangText(context: context).getLocal().seo_all_capital, 3),
+          // tabBarDivider(),
           buildTopTapBarItem(
               LangText(context: context).getLocal().shipping_ucf, 4),
         ],
